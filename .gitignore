@@ -444,3 +444,4 @@ $RECYCLE.BIN/
 /.editorconfig
 /src/web-nuxt/package-lock.json
 .nuxt
+/design
