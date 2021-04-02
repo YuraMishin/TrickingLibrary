@@ -25,7 +25,7 @@ namespace API
       services.AddControllers();
 
       #region Dependencies Injection
-
+      services.AddSingleton<TrickyStore>();
       #endregion
 
       services.AddCors(options => options.AddPolicy(AllCors, build => build.AllowAnyHeader()
