@@ -1,4 +1,5 @@
 using System.Linq;
+using API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -21,5 +22,13 @@ namespace API.Controllers
     // /api/tricks/{id}
     [HttpGet("{id}")]
     public IActionResult Get(int id) => Ok(_store.All.FirstOrDefault(x => x.Id.Equals(id)));
+
+    // /api/tricks
+    [HttpPost]
+    public IActionResult Create([FromBody] Trick trick)
+    {
+      _store.Add(trick);
+      return Ok();
+    }
   }
 }

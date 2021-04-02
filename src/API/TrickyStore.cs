@@ -17,5 +17,11 @@ namespace API
     }
 
     public IEnumerable<Trick> All => _tricks;
+
+    public void Add(Trick trick)
+    {
+      trick.Id = _tricks.Count + 1;
+      _tricks.Add(trick);
+    }
   }
 }
