@@ -359,7 +359,6 @@ MigrationBackup/
 
 # globs
 Makefile.in
-*.userprefs
 *.usertasks
 config.make
 config.status
@@ -445,3 +444,4 @@ $RECYCLE.BIN/
 /src/web-nuxt/package-lock.json
 .nuxt
 /design
+*.mp4
