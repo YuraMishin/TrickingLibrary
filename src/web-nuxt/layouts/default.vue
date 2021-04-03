@@ -7,6 +7,9 @@
       Upload
     </v-btn>
     </v-app-bar>
+
+    <video-upload/>
+
     <v-main>
       <v-container>
         <nuxt/>
@@ -22,16 +25,16 @@
 </template>
 
 <script>
+  import {mapMutations} from 'vuex'
+  import VideoUpload from "../components/video-upload";
+
   export default {
+    components: {VideoUpload},
     data() {
       return {
 
       }
     },
-    methods: {
-      toggleActivity(){
-        console.log('show/hide dialog');
-      }
-    }
+    methods: mapMutations('video-upload', ['toggleActivity'])
   }
 </script>
