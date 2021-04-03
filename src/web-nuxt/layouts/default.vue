@@ -6,7 +6,7 @@
       </v-container>
     </v-main>
     <v-footer
-      :absolute="!fixed"
+      :absolute="true"
       app
     >
       <span>&copy; {{ new Date().getFullYear() }}</span>
@@ -18,7 +18,7 @@
   export default {
     data() {
       return {
-        fixed: false,
+
       }
     }
   }
