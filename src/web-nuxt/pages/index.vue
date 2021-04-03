@@ -1,33 +1,61 @@
 <template>
-  <div>
-    <p>{{message}}</p>
-    <p>{{messageAsyncData}}</p>
-    <p>{{messageVuex}}</p>
-  </div>
+  <v-layout
+    column
+    justify-center
+    align-center
+  >
+    <v-flex
+      xs12
+      sm8
+      md6
+    >
+      <div v-if="tricks">
+        <p v-for="t in tricks">
+          {{t.name}}
+        </p>
+      </div>
+
+      <div>
+        <v-text-field label="Tricking Name" v-model="trickName"></v-text-field>
+        <v-btn @click="saveTrick">Save Trick</v-btn>
+      </div>
+
+      {{message}}
+      <v-btn @click="reset">Reset Message</v-btn>
+      <v-btn @click="resetTricks">Reset Tricks</v-btn>
+
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
-  import Axios from "axios";
   import {mapActions, mapMutations, mapState} from 'vuex';
 
   export default {
     components: {},
     data: () => ({
-      message: "Hello World basic!",
-      messageAsyncData: "Hello World asyncData!"
+      trickName: ""
     }),
     computed: {
-      ...mapState(['messageVuex'])
+      ...mapState({
+        message: state => state.message
+      }),
+      ...mapState('tricks', {
+        tricks: state => state.tricks
+      })
     },
-    asyncData(payload){
-      console.log("asyncData called")
-      return Axios.get("http://localhost:5000/api/home")
-        .then(({data}) => {
-          return { messageAsyncData: data }
-        })
-    },
-    async fetch (){
-      await this.$store.dispatch('fetchMessage');
+    methods: {
+      ...mapMutations([
+        'reset'
+      ]),
+      ...mapMutations('tricks', {
+        resetTricks: 'reset'
+      }),
+      ...mapActions('tricks', ['createTrick']),
+      async saveTrick() {
+        await this.createTrick({trick: {name: this.trickName}});
+        this.trickName = "";
+      }
     }
   }
 </script>

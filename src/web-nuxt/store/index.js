@@ -1,31 +1,25 @@
-﻿const initState = () => ({
-  messageNuxtServerInit: "init",
-  messageVuex: "init"
+﻿import Axios from "axios";
+
+const initState = () => ({
+  message: "init"
 })
 
 export const state = initState
 
 export const mutations = {
-  setMessageNuxtServerInit(state, message) {
-    state.messageNuxtServerInit = message
+  setMessage(state, message) {
+    state.message = message;
   },
-  setMessageVuex(state, message) {
-    state.messageVuex = message
-  },
-  reset(state) {
-    Object.assign(state, initState())
+  reset(state){
+    Object.assign(state, initState());
   }
 }
 
 export const actions = {
-  async nuxtServerInit({commit, dispatch}) {
-    console.log('nuxtServerInit called');
-    const message = 'Hello world from nuxtServerInit()';
-    commit("setMessageNuxtServerInit", message)
-  },
-
-  async fetchMessage({commit}) {
-    const message = 'Hello world from vuex';
-    commit('setMessageVuex', message);
+  async nuxtServerInit({commit, dispatch}){
+    const message = (await Axios.get("http://localhost:5000/api/home")).data;
+    console.log(message);
+    commit("setMessage", message);
+    await dispatch("tricks/fetchTricks");
   }
 }
