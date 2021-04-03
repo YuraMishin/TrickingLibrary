@@ -1,14 +1,12 @@
 <template>
   <v-app dark>
     <v-app-bar app dense>
-    <v-toolbar-title>Tricking Library</v-toolbar-title>
-    <v-spacer></v-spacer>
-    <v-btn depressed @click="toggleActivity">
-      Upload
-    </v-btn>
-    </v-app-bar>
+      <v-toolbar-title>Tricking Library</v-toolbar-title>
+      <v-spacer></v-spacer>
 
-    <video-upload/>
+      <video-upload/>
+
+    </v-app-bar>
 
     <v-main>
       <v-container>
@@ -25,16 +23,9 @@
 </template>
 
 <script>
-  import {mapMutations} from 'vuex'
   import VideoUpload from "../components/video-upload";
 
   export default {
-    components: {VideoUpload},
-    data() {
-      return {
-
-      }
-    },
-    methods: mapMutations('video-upload', ['toggleActivity'])
+    components: {VideoUpload}
   }
 </script>

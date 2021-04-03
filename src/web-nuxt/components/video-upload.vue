@@ -1,46 +1,102 @@
 ﻿<template>
-  <v-dialog
-    :value="active" persistent
-    max-width="400"
-  >
-    <v-card>
-      <v-card-title class="headline grey lighten-2">
-        Privacy Policy
-      </v-card-title>
-      <v-card-text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-        officia deserunt mollit anim id est laborum.
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn
-          color="primary"
-          text
-          @click="toggleActivity"
-        >
-          I accept
-        </v-btn>
-      </v-card-actions>
-    </v-card>
+  <v-dialog :value="active" persistent>
+
+    <template v-slot:activator="{on}">
+      <v-btn depressed @click="toggleActivity">
+        Upload
+      </v-btn>
+    </template>
+
+    <v-stepper v-model="step">
+      <v-stepper-header>
+        <v-stepper-step :complete="step > 1" step="1">Select Type</v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="step > 2" step="2">Upload Video</v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="step > 3" step="3">Trick Information</v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step step="4">Review</v-stepper-step>
+      </v-stepper-header>
+
+      <v-stepper-items>
+        <v-stepper-content step="1">
+          <div class="d-flex flex-column align-center">
+            <v-btn class="my-2" @click="setType(uploadType.TRICK)">Trick</v-btn>
+          </div>
+        </v-stepper-content>
+
+        <v-stepper-content step="2">
+          <div>
+            <v-file-input accept="video/*" @change="handleFile"></v-file-input>
+          </div>
+        </v-stepper-content>
+
+        <v-stepper-content step="3">
+          <div>
+            <v-text-field label="Tricking Name" v-model="trickName"></v-text-field>
+            <v-btn @click="saveTrick">Save Trick</v-btn>
+          </div>
+        </v-stepper-content>
+
+        <v-stepper-content step="4">
+          <div>
+            Success
+          </div>
+        </v-stepper-content>
+      </v-stepper-items>
+    </v-stepper>
+    <div class="d-flex justify-center my-4">
+      <v-btn @click="toggleActivity">
+        Close
+      </v-btn>
+    </div>
   </v-dialog>
 </template>
 
 <script>
-  import {mapState, mapMutations} from 'vuex';
+  import {UPLOAD_TYPE} from '../data/enum.js'
+  import {mapState, mapActions, mapMutations} from 'vuex';
 
   export default {
     name: "video-upload",
-    data: () => ({}),
+    data: () => ({
+      trickName: "",
+    }),
     computed: {
-      ...mapState('video-upload', ['active']),
+      ...mapState('video-upload', ['uploadPromise', 'active', 'step']),
+      uploadType() {
+        return {
+          ...UPLOAD_TYPE
+        }
+      }
     },
     methods: {
-      ...mapMutations('video-upload', ['reset', 'toggleActivity'])
+      ...mapMutations('video-upload', ['reset', 'toggleActivity', 'setType']),
+      ...mapActions('video-upload', ['startVideoUpload', 'createTrick']),
+      async handleFile(file) {
+        if (!file) return;
+
+        const form = new FormData();
+        form.append("video", file);
+        this.startVideoUpload({form});
+      },
+      async saveTrick() {
+        if (!this.uploadPromise) {
+          console.log("uploadPromise is null");
+          return;
+        }
+
+        const video = await this.uploadPromise;
+        await this.createTrick({trick: {name: this.trickName, video}});
+        this.trickName = "";
+        this.reset();
+      },
     }
   }
 </script>
