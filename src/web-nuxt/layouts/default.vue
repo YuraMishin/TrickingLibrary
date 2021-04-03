@@ -1,5 +1,12 @@
 <template>
   <v-app dark>
+    <v-app-bar app dense>
+    <v-toolbar-title>Tricking Library</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn depressed @click="toggleActivity">
+      Upload
+    </v-btn>
+    </v-app-bar>
     <v-main>
       <v-container>
         <nuxt/>
@@ -19,6 +26,11 @@
     data() {
       return {
 
+      }
+    },
+    methods: {
+      toggleActivity(){
+        console.log('show/hide dialog');
       }
     }
   }
