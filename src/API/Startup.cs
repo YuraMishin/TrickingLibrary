@@ -1,6 +1,8 @@
+using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,8 +26,16 @@ namespace API
     {
       services.AddControllers();
 
+      #region Database
+
+      services.AddDbContext<AppDbContext>(
+        options => options.UseInMemoryDatabase("Dev")
+        );
+
+      #endregion
+
       #region Dependencies Injection
-      services.AddSingleton<TrickyStore>();
+
       #endregion
 
       services.AddCors(options => options.AddPolicy(AllCors, build => build.AllowAnyHeader()
