@@ -11,10 +11,15 @@ namespace Data
     public DbSet<Submission> Submissions { get; set; }
     public DbSet<Difficulty> Difficulties { get; set; }
     public DbSet<TrickRelationship> TrickRelationships { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<TrickCategory> TrickCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       base.OnModelCreating(modelBuilder);
+
+      modelBuilder.Entity<TrickCategory>()
+        .HasKey(x => new { x.CategoryId, x.TrickId });
 
       modelBuilder.Entity<TrickRelationship>()
         .HasKey(x => new { x.PrerequisiteId, x.ProgressionId });

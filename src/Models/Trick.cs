@@ -11,5 +11,7 @@ namespace Models
 
     public IList<TrickRelationship> Prerequisites { get; set; } = new List<TrickRelationship>();
     public IList<TrickRelationship> Progressions { get; set; } = new List<TrickRelationship>();
+
+    public IList<TrickCategory> TrickCategories { get; set; } = new List<TrickCategory>();
   }
 }
