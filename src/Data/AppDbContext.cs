@@ -9,5 +9,6 @@ namespace Data
 
     public DbSet<Trick> Tricks { get; set; }
     public DbSet<Submission> Submissions { get; set; }
+    public DbSet<Difficulty> Difficulties { get; set; }
   }
 }
