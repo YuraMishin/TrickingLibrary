@@ -1,24 +1,15 @@
 <template>
   <v-app dark>
     <v-app-bar app dense>
-      <v-toolbar-title>Tricking Library</v-toolbar-title>
+      <nuxt-link class="text-h5 text--primary" style="text-decoration: none;" to="/">Tricking Library</nuxt-link>
+
       <v-spacer></v-spacer>
 
       <content-creation-dialog></content-creation-dialog>
-
     </v-app-bar>
-
     <v-main>
-      <v-container>
-        <nuxt/>
-      </v-container>
+      <nuxt/>
     </v-main>
-    <v-footer
-      :absolute="true"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
   </v-app>
 </template>
 
@@ -26,6 +17,6 @@
   import ContentCreationDialog from "../components/content-creation/content-creation-dialog";
 
   export default {
-    components: {ContentCreationDialog}
+    components: {ContentCreationDialog},
   }
 </script>
