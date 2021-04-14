@@ -445,3 +445,4 @@ $RECYCLE.BIN/
 .nuxt
 /design
 *.mp4
+ffmpeg/
