@@ -1,5 +1,5 @@
 using System.Threading.Channels;
-using API.BackgroundServices;
+using API.BackgroundServices.VideoEditing;
 using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +41,7 @@ namespace API
       #region Dependencies Injection
 
       services.AddSingleton(_ => Channel.CreateUnbounded<EditVideoMessage>());
+      services.AddSingleton<VideoManager>();
 
       #endregion
 

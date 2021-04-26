@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using API.BackgroundServices;
+using API.BackgroundServices.VideoEditing;
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -21,19 +21,25 @@ namespace API.Controllers
     }
 
     [HttpGet]
-    public IEnumerable<Submission> All() => _ctx.Submissions
-                                                .Where(x => x.VideoProcessed)
-                                                .ToList();
+    public IEnumerable<Submission> All() =>
+        _ctx.Submissions
+            .Where(x => x.VideoProcessed)
+            .ToList();
 
     [HttpGet("{id}")]
     public Submission Get(int id) => _ctx.Submissions.FirstOrDefault(x => x.Id.Equals(id));
 
     [HttpPost]
-    public async Task<Submission> Create(
+    public async Task<IActionResult> Create(
         [FromBody] Submission submission,
-        [FromServices] Channel<EditVideoMessage> channel)
+        [FromServices] Channel<EditVideoMessage> channel,
+        [FromServices] VideoManager videoManager)
     {
-      //todo: validate video path
+      if (!videoManager.TemporaryVideoExists(submission.Video))
+      {
+        return BadRequest();
+      }
+
       submission.VideoProcessed = false;
       _ctx.Add(submission);
       await _ctx.SaveChangesAsync();
@@ -42,7 +48,7 @@ namespace API.Controllers
         SubmissionId = submission.Id,
         Input = submission.Video,
       });
-      return submission;
+      return Ok(submission);
     }
 
     [HttpPut]
